@@ -27,7 +27,6 @@ import {
   Heart,
   Shield,
   Zap,
-  Sparkles,
   Stethoscope,
   Brain,
   Activity,
@@ -302,13 +301,6 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
                   unoptimized
                 />
               </div>
-              <div className="portrait-overlay">
-                <div className="floating-badge"><Sparkles size={16} /><span>Élite médicale</span></div>
-              </div>
-            </div>
-            <div className="hero-card">
-              <strong><Clock size={14} /> {openingSummary}</strong>
-              <span><MapPin size={12} /> Bellevue, El Harrach — Alger</span>
             </div>
             <div className="vertical-word">BELLEVUE</div>
           </motion.div>
