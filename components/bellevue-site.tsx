@@ -240,7 +240,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <header className={`nav ${scrolled ? "scrolled" : ""}`}>
         <a href="#home" className="brand">
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="BELLEVUE Cabinet Médical"
             width={120}
             height={48}
@@ -578,7 +578,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <footer>
         <div className="brand">
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="BELLEVUE Cabinet Médical"
             width={100}
             height={40}
