@@ -2,8 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { verifyAdminCredentials } from "@/lib/auth";
-import { getAdminSession } from "@/lib/auth";
+import { getAdminSession, verifyAdminCredentials } from "@/lib/auth";
 import { updateAppointmentStatus } from "@/lib/db/appointments";
 import type { AppointmentStatus } from "@/types/appointment";
 
@@ -68,6 +67,10 @@ export async function setAppointmentStatusAction(
   const session = await getAdminSession();
   if (!session) {
     redirect("/admin/login");
+  }
+
+  if (!["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"].includes(status)) {
+    return;
   }
 
   await updateAppointmentStatus(id, status);

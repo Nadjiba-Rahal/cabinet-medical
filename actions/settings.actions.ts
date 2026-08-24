@@ -49,6 +49,11 @@ export async function updateSettingsAction(
   if (weeklyHours) {
     try {
       const hours = JSON.parse(weeklyHours) as Record<string, { start?: string; end?: string }>;
+      const timePattern = /^([01]\d|2[0-3]):[0-5]\d$/;
+      const validHours = Object.values(hours).every((day) =>
+        Boolean(day?.start && day?.end && timePattern.test(day.start) && timePattern.test(day.end) && day.start < day.end)
+      );
+      if (!validHours) return { ok: false };
       const monday = hours["1"];
       if (monday?.start && monday.end) {
         partial.openStart = monday.start;
@@ -68,6 +73,17 @@ export async function updateSettingsAction(
     ) {
       partial[key] = value.trim();
     }
+  }
+
+  const interval = partial.appointmentInterval;
+  if (interval && !["15", "30", "45", "60"].includes(interval)) {
+    return { ok: false };
+  }
+
+  const breakStart = partial.breakStart;
+  const breakEnd = partial.breakEnd;
+  if (breakStart && breakEnd && (breakStart < "00:00" || breakStart > "23:59" || breakEnd <= breakStart)) {
+    return { ok: false };
   }
 
   await updateSettings(partial);
