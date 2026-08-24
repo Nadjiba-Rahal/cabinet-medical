@@ -28,12 +28,13 @@ export default async function AdminDashboardPage() {
   const pendingAppointments = appointments
     .filter((appointment) => appointment.status === "PENDING")
     .slice(0, 3);
+  const pendingCount = appointments.filter((appointment) => appointment.status === "PENDING").length;
   const nextAppointment = todayAppointments.find((appointment) => new Date(appointment.startAt) >= now);
   const recent = appointments.slice(0, 6);
 
   const cards = [
     { label: "Rendez-vous aujourd'hui", value: stats.total, detail: "Planning du jour", icon: Clock3 },
-    { label: "À traiter", value: stats.pending, detail: "Demandent votre attention", icon: TriangleAlert, urgent: stats.pending > 0 },
+    { label: "À traiter", value: pendingCount, detail: "Demandent votre attention", icon: TriangleAlert, urgent: pendingCount > 0 },
     { label: "Confirmés", value: stats.confirmed, detail: "Du planning d'aujourd'hui", icon: CheckCircle2 },
     { label: "Annulés", value: stats.cancelled, detail: "Aujourd'hui", icon: TriangleAlert },
   ];
@@ -114,7 +115,7 @@ export default async function AdminDashboardPage() {
               <p className="admin-kicker">Action requise</p>
               <h2>À traiter</h2>
             </div>
-            <span className="attention-count">{stats.pending}</span>
+            <span className="attention-count">{pendingCount}</span>
           </div>
           {pendingAppointments.length > 0 ? pendingAppointments.map((appointment) => (
             <div className="attention-item" key={appointment.id}>

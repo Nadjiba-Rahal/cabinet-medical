@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyAdminCredentials } from "@/lib/auth";
+import { getAdminSession } from "@/lib/auth";
 import { updateAppointmentStatus } from "@/lib/db/appointments";
 import type { AppointmentStatus } from "@/types/appointment";
 
@@ -64,6 +65,11 @@ export async function setAppointmentStatusAction(
   id: string,
   status: AppointmentStatus
 ) {
+  const session = await getAdminSession();
+  if (!session) {
+    redirect("/admin/login");
+  }
+
   await updateAppointmentStatus(id, status);
   redirect("/admin/appointments");
 }
