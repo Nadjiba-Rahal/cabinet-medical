@@ -189,7 +189,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
   const factsData = [
     { label: "10+", desc: "Années d'expérience", icon: <Award size={24} /> },
     { label: openingDaysLabel || "Horaires", desc: openingTimesLabel || "Voir nos disponibilités", icon: <Calendar size={24} /> },
-    { label: "Bellevue", desc: "El Harrach — Alger", icon: <MapPin size={24} /> },
+    { label: "Bellevue", desc: "El Harrach - Alger", icon: <MapPin size={24} /> },
     { label: "24h/24", desc: "Prise de rendez-vous", icon: <Zap size={24} /> },
   ];
 
@@ -322,7 +322,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <section id="services" className="services-section">
         <motion.div className="section-head" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div>
-            <p className="eyebrow"><span className="dot" /> 01 — NOS SERVICES</p>
+            <p className="eyebrow"><span className="dot" /> 01 - NOS SERVICES</p>
             <h2 className="section-title">Des soins pensés<br /><em>pour vous.</em><span className="title-accent">✦</span></h2>
           </div>
           <p className="section-desc">Une approche médicale fondée sur l&apos;écoute, la prévention et un suivi personnalisé.</p>
@@ -372,7 +372,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
           <div className="services-cta-content">
             <Quote size={20} />
             <p>&quot;La santé est un état d&apos;harmonie entre le corps, l&apos;esprit et l&apos;environnement.&quot;</p>
-            <span>— Dr. Nadia Rahal</span>
+            <span>- Dr. Nadia Rahal</span>
           </div>
         </motion.div>
       </section>
@@ -394,7 +394,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
             <div className="about-image-badge"><Fingerprint size={16} /><span>Confiance &amp; Exigence</span></div>
           </motion.div>
           <motion.div className="about-copy" variants={fadeInUp}>
-            <p className="eyebrow"><span className="dot" /> 02 — LE CABINET</p>
+            <p className="eyebrow"><span className="dot" /> 02 - LE CABINET</p>
             <h2>Une relation de confiance,<br /><em>avant tout.</em></h2>
             <p>Le Cabinet Bellevue place l&apos;écoute et l&apos;attention au cœur de chaque consultation. Notre objectif est de rendre votre parcours de soins plus clair, plus humain et plus accessible.</p>
             <div className="doctor-card">
@@ -414,7 +414,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
         <div className="why-bg-shapes"><div className="shape shape-1" /><div className="shape shape-2" /></div>
         <motion.div className="section-head" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div>
-            <p className="eyebrow"><span className="dot" /> 03 — NOTRE APPROCHE</p>
+            <p className="eyebrow"><span className="dot" /> 03 - NOTRE APPROCHE</p>
             <h2>Pourquoi<br /><em>Bellevue ?</em></h2>
           </div>
         </motion.div>
@@ -472,7 +472,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <section className="process-section">
         <motion.div className="process-content" initial="initial" whileInView="animate" viewport={{ once: true }} variants={staggerChildren}>
           <motion.div variants={fadeInUp}>
-            <p className="eyebrow"><span className="dot" /> 04 — COMMENT ÇA MARCHE</p>
+            <p className="eyebrow"><span className="dot" /> 04 - COMMENT ÇA MARCHE</p>
             <h2>Votre rendez-vous<br /><em>en trois étapes.</em></h2>
           </motion.div>
           <div className="steps-enhanced">
@@ -498,7 +498,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
           <div className="cta-particle" style={{ left: "80%", animationDelay: "3s" }} />
         </div>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="cta-content">
-          <p className="eyebrow"><span className="dot light" /> 05 — RENDEZ-VOUS</p>
+          <p className="eyebrow"><span className="dot light" /> 05 - RENDEZ-VOUS</p>
           <h2>Votre prochain rendez-vous<br /><em>commence ici.</em></h2>
           <p>Choisissez votre consultation et votre créneau en moins d&apos;une minute.</p>
           <button className="primary-btn light" onClick={openBooking}>Prendre rendez-vous <ArrowUpRight size={16} /></button>
@@ -509,7 +509,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <section id="faq" className="faq-section">
         <motion.div className="faq-content" initial="initial" whileInView="animate" viewport={{ once: true }} variants={staggerChildren}>
           <motion.div variants={fadeInUp}>
-            <p className="eyebrow"><span className="dot" /> 06 — FAQ</p>
+            <p className="eyebrow"><span className="dot" /> 06 - FAQ</p>
             <h2>Questions<br /><em>fréquentes.</em></h2>
           </motion.div>
           <div className="faq-list-enhanced">
@@ -526,7 +526,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       {/* Location */}
       <section className="location-section" id="localisation">
         <div className="location-copy">
-          <p className="eyebrow"><span className="dot" /> 07 — NOUS TROUVER</p>
+          <p className="eyebrow"><span className="dot" /> 07 - NOUS TROUVER</p>
           <h2>Un cabinet proche<br /><em>de vous.</em></h2>
           <div className="location-details">
             <div><MapPin size={18} /><span>Cabinet Bellevue<br />{settings.address}</span></div>
@@ -545,7 +545,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
       <section id="contact" className="contact-section">
         <motion.div className="contact-content" initial="initial" whileInView="animate" viewport={{ once: true }} variants={staggerChildren}>
           <motion.div variants={fadeInUp}>
-            <p className="eyebrow"><span className="dot" /> 08 — CONTACT</p>
+            <p className="eyebrow"><span className="dot" /> 08 - CONTACT</p>
             <h2>Nous sommes<br /><em>à votre écoute.</em></h2>
           </motion.div>
           <div className="contact-grid-enhanced">
