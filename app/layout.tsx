@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     description: "Prenez rendez-vous en ligne en quelques clics.",
     type: "website",
   },
+  icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
