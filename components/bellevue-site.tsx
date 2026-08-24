@@ -299,6 +299,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
                   style={{ objectFit: "cover", width: "100%", height: "100%" }}
                   loading="eager"
                   priority
+                  unoptimized
                 />
               </div>
               <div className="portrait-overlay">
