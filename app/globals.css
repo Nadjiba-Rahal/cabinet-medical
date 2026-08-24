@@ -1178,7 +1178,9 @@ footer > span { font-size: 10px; color: var(--muted); }
     flex-direction: column;
     gap: 22px;
     border-bottom: 1px solid var(--line);
+    z-index: 25;
   }
+  .navlinks.open { display: flex; }
   .navright { display: none; }
   .hamb { display: block; }
   .hero-content { grid-template-columns: 1fr; padding: 65px 0; }
