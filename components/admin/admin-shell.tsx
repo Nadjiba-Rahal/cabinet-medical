@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LayoutDashboard, CalendarCheck, Settings, LogOut } from "lucide-react";
 import { logoutAction } from "@/actions/admin.actions";
 
@@ -9,6 +12,8 @@ const NAV = [
 ];
 
 export function AdminShell({ children, email }: { children: React.ReactNode; email: string }) {
+  const pathname = usePathname();
+
   return (
     <div className="admin-shell">
       <header className="admin-header">
@@ -17,7 +22,7 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
         </Link>
         <nav className="admin-nav">
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} href={item.href} className={pathname === item.href ? "active" : undefined}>
               <item.icon size={14} /> {item.label}
             </Link>
           ))}
