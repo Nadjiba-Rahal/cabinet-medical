@@ -18,6 +18,10 @@ export async function getSettings(): Promise<SettingsMap> {
     }
   }
 
+  if (!rows.some((row) => String(row.key) === "openingDays") && rows.some((row) => String(row.key) === "openDays")) {
+    map.openingDays = map.openDays;
+  }
+
   return map as SettingsMap;
 }
 

@@ -36,7 +36,9 @@ export function formatOpeningHours(settings: SettingsMap): string {
     const hours = getHoursForDay(new Date(2026, 0, 4 + day), settings);
     return hours.start === firstHours.start && hours.end === firstHours.end;
   });
-  if (sameHours) return `${labels[firstDay]} — ${labels[days[days.length - 1]]} · ${firstHours.start} — ${firstHours.end}`;
+  const consecutive = days.every((day, index) => index === 0 || day === days[index - 1] + 1);
+  if (sameHours && consecutive) return `${labels[firstDay]} — ${labels[days[days.length - 1]]} · ${firstHours.start} — ${firstHours.end}`;
+  if (sameHours) return `${days.map((day) => labels[day]).join(", ")} · ${firstHours.start} — ${firstHours.end}`;
   return days.map((day) => {
     const hours = getHoursForDay(new Date(2026, 0, 4 + day), settings);
     return `${labels[day]} ${hours.start} — ${hours.end}`;

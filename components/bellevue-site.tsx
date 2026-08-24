@@ -185,10 +185,12 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
     setStep(5);
   }
 
+  const openingSummary = formatOpeningHours(settings);
+  const [openingDaysLabel, openingTimesLabel] = openingSummary.split(" · ");
   const factsData = [
     { label: "10+", desc: "Années d'expérience", icon: <Award size={24} /> },
-    { label: settings.openingHours.split("·")[0]?.trim() || "Lun — Sam", desc: settings.openingHours.split("·")[1]?.trim() || "08:00 — 18:00", icon: <Calendar size={24} /> },
-    { label: "Alger", desc: "Centre-ville", icon: <MapPin size={24} /> },
+    { label: openingDaysLabel || "Horaires", desc: openingTimesLabel || "Voir nos disponibilités", icon: <Calendar size={24} /> },
+    { label: "Bellevue", desc: "El Harrach — Alger", icon: <MapPin size={24} /> },
     { label: "24h/24", desc: "Prise de rendez-vous", icon: <Zap size={24} /> },
   ];
 
@@ -216,7 +218,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
     { q: "Puis-je annuler mon rendez-vous ?", a: "Oui. Contactez simplement le cabinet par téléphone ou WhatsApp." },
     { q: "Dois-je créer un compte ?", a: "Non. La réservation est volontairement simple et ne nécessite aucun compte." },
     { q: "Puis-je contacter le cabinet via WhatsApp ?", a: "Oui, le bouton WhatsApp permet de contacter directement le cabinet." },
-    { q: "Quels sont les horaires du cabinet ?", a: `Le cabinet est ouvert ${settings.openingHours}.` },
+    { q: "Quels sont les horaires du cabinet ?", a: `Le cabinet est ouvert ${openingSummary}.` },
   ];
 
   const dateLabelFormatter = new Intl.DateTimeFormat("fr-FR", { month: "short" });
@@ -304,8 +306,8 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
               </div>
             </div>
             <div className="hero-card">
-              <strong><Clock size={14} /> {settings.openStart} — {settings.openEnd}</strong>
-              <span><MapPin size={12} /> {formatOpeningHours(settings)}</span>
+              <strong><Clock size={14} /> {openingSummary}</strong>
+              <span><MapPin size={12} /> Bellevue, El Harrach — Alger</span>
             </div>
             <div className="vertical-word">BELLEVUE</div>
           </motion.div>
