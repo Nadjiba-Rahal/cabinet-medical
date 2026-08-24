@@ -1370,6 +1370,13 @@ footer > span { font-size: 10px; color: var(--muted); }
 .next-appointment-content div b { font-size: 14px; }
 .next-appointment-content div span { color: var(--muted); font-size: 11px; }
 .recent-section { margin-bottom: 30px; }
+.quick-actions-section { margin-bottom: 34px; }
+.quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.quick-action { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: var(--card-bg); color: var(--green); transition: border-color 0.3s, transform 0.3s; }
+.quick-action:hover { border-color: var(--green); transform: translateY(-2px); }
+.quick-action span { display: grid; gap: 3px; min-width: 0; flex: 1; }
+.quick-action b { color: var(--ink); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.quick-action small { color: var(--muted); font-size: 10px; white-space: nowrap; }
 .recent-section .admin-panel-heading { margin-bottom: 14px; }
 .empty-table { color: var(--muted); padding: 32px !important; text-align: center; }
 .admin-table td strong { font-size: 13px; }
@@ -1429,6 +1436,7 @@ footer > span { font-size: 10px; color: var(--muted); }
   .admin-welcome { display: block; }
   .admin-primary-action { margin-top: 18px; }
   .admin-dashboard-grid, .location-section { grid-template-columns: 1fr; }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
   .location-section { padding: 64px 6vw; gap: 36px; }
   .location-map, .location-map iframe { min-height: 290px; }
   .opening-day, .break-settings { align-items: flex-start; flex-direction: column; gap: 10px; }

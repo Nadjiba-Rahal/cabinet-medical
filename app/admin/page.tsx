@@ -1,7 +1,7 @@
 import { requireAdminOrRedirect } from "@/actions/admin.actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { getTodayStats, getAllAppointments } from "@/lib/db/appointments";
-import { ArrowRight, CalendarPlus, CheckCircle2, Clock3, TriangleAlert } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CalendarPlus, CheckCircle2, Clock3, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -63,7 +63,7 @@ export default async function AdminDashboardPage() {
           <h1>Bonjour, Administration</h1>
           <p className="admin-date">{dateFmt.format(now)} · Cabinet Bellevue</p>
         </div>
-        <Link href="/#booking" className="admin-primary-action">
+        <Link href="/?booking=1#booking" className="admin-primary-action">
           <CalendarPlus size={16} /> Nouveau rendez-vous
         </Link>
       </section>
@@ -140,6 +140,16 @@ export default async function AdminDashboardPage() {
             <Link href="/admin/appointments" className="text-link">Voir <ArrowRight size={14} /></Link>
           </div>
         ) : <p className="empty-state">La journée est libre pour le moment.</p>}
+      </section>
+
+      <section className="quick-actions-section">
+        <p className="admin-kicker">Accès rapide</p>
+        <div className="quick-actions">
+          <Link href="/admin/appointments" className="quick-action"><CalendarPlus size={17} /><span><b>Voir les rendez-vous</b><small>Gérer le planning</small></span><ArrowRight size={14} /></Link>
+          <Link href="/admin/settings" className="quick-action"><Clock3 size={17} /><span><b>Modifier les horaires</b><small>Ouverture et pauses</small></span><ArrowRight size={14} /></Link>
+          <Link href="/admin/settings" className="quick-action"><CheckCircle2 size={17} /><span><b>Voir les paramètres</b><small>Informations du cabinet</small></span><ArrowRight size={14} /></Link>
+          <Link href="/" className="quick-action"><ArrowUpRight size={17} /><span><b>Retour au site</b><small>Voir l&apos;expérience patient</small></span><ArrowRight size={14} /></Link>
+        </div>
       </section>
 
       <section className="recent-section">
