@@ -10,6 +10,7 @@ import { sendAppointmentConfirmationEmail } from "@/lib/notifications/email";
 import {
   generateDaySlots,
   filterAvailableSlots,
+  isSlotWithinSchedule,
 } from "@/lib/booking/slots";
 import { getSettings } from "@/lib/db/settings";
 
@@ -78,6 +79,11 @@ export async function createAppointmentAction(
     Number.isNaN(start.getTime()) ||
     start.getTime() < Date.now() - 60_000
   ) {
+    return { ok: false, error: "validation" };
+  }
+
+  const settings = await getSettings();
+  if (!isSlotWithinSchedule(start, service.durationMinutes, settings)) {
     return { ok: false, error: "validation" };
   }
 
