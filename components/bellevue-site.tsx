@@ -292,7 +292,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
             <div className="portrait">
               <div className="portrait-placeholder">
                 <Image
-                  src="/images/doctor-portrait.jpg"
+                  src="/images/doctor-portrait.jpg?v=20260824"
                   alt="Dr. Nadia Rahal"
                   width={600}
                   height={650}
