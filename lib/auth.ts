@@ -4,14 +4,18 @@ import bcrypt from "bcryptjs";
 import { getAdminByEmail } from "./db/admin";
 
 const SESSION_COOKIE = "bellevue_admin_session";
-const SECRET =
-  process.env.ADMIN_SESSION_SECRET ||
-  "dev-only-insecure-secret-change-me";
+function getSecret() {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("ADMIN_SESSION_SECRET must be configured in production.");
+  }
+  return secret || "dev-only-insecure-secret-change-me";
+}
 
 const MAX_AGE_SECONDS = 60 * 60 * 8;
 
 function sign(value: string) {
-  return createHmac("sha256", SECRET).update(value).digest("hex");
+  return createHmac("sha256", getSecret()).update(value).digest("hex");
 }
 
 export function verifyPassword(plain: string, hash: string) {
@@ -57,9 +61,13 @@ export async function getAdminSession(): Promise<{ email: string } | null> {
 
   if (!token) return null;
 
-  const [email, expiresStr, signature] = token.split(".");
+  const signatureIndex = token.lastIndexOf(".");
+  const expiresIndex = token.lastIndexOf(".", signatureIndex - 1);
+  const email = token.slice(0, expiresIndex);
+  const expiresStr = token.slice(expiresIndex + 1, signatureIndex);
+  const signature = token.slice(signatureIndex + 1);
 
-  if (!email || !expiresStr || !signature) {
+  if (signatureIndex < 0 || expiresIndex < 0 || !email || !expiresStr || !signature) {
     return null;
   }
 
