@@ -38,7 +38,7 @@ import {
   Mail,
 } from "lucide-react";
 import { getAvailableSlotsAction, createAppointmentAction } from "@/actions/appointment.actions";
-import { getNextAvailableDates } from "@/lib/booking/slots";
+import { formatOpeningHours, getNextAvailableDates } from "@/lib/booking/slots";
 import { buildWhatsAppLink } from "@/lib/notifications/whatsapp";
 import { appointmentInputSchema } from "@/lib/validations/appointment";
 import type { Service } from "@/types/service";
@@ -305,7 +305,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
             </div>
             <div className="hero-card">
               <strong><Clock size={14} /> {settings.openStart} — {settings.openEnd}</strong>
-              <span><MapPin size={12} /> Lun — Sam · Alger</span>
+              <span><MapPin size={12} /> {formatOpeningHours(settings)}</span>
             </div>
             <div className="vertical-word">BELLEVUE</div>
           </motion.div>
@@ -528,11 +528,29 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
         </motion.div>
       </section>
 
+      {/* Location */}
+      <section className="location-section" id="localisation">
+        <div className="location-copy">
+          <p className="eyebrow"><span className="dot" /> 07 — NOUS TROUVER</p>
+          <h2>Un cabinet proche<br /><em>de vous.</em></h2>
+          <div className="location-details">
+            <div><MapPin size={18} /><span>Cabinet Bellevue<br />{settings.address}</span></div>
+            <div><Phone size={18} /><span>{settings.phone}</span></div>
+            <div><Clock size={18} /><span>{formatOpeningHours(settings)}</span></div>
+          </div>
+          <a className="outline-btn" href="https://www.google.com/maps/search/?api=1&query=Bellevue+El+Harrach+Alger" target="_blank" rel="noopener noreferrer">Itinéraire <ArrowUpRight size={15} /></a>
+        </div>
+        <div className="location-map">
+          <iframe title="Localisation fictive du Cabinet Bellevue" src="https://www.google.com/maps?q=Bellevue%20El%20Harrach%20Alger&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          <span className="demo-map-label">Emplacement de démonstration</span>
+        </div>
+      </section>
+
       {/* Contact */}
       <section id="contact" className="contact-section">
         <motion.div className="contact-content" initial="initial" whileInView="animate" viewport={{ once: true }} variants={staggerChildren}>
           <motion.div variants={fadeInUp}>
-            <p className="eyebrow"><span className="dot" /> 07 — CONTACT</p>
+            <p className="eyebrow"><span className="dot" /> 08 — CONTACT</p>
             <h2>Nous sommes<br /><em>à votre écoute.</em></h2>
           </motion.div>
           <div className="contact-grid-enhanced">
@@ -540,7 +558,7 @@ export function BellevueSite({ services, settings }: { services: Service[]; sett
               { icon: <MapPin />, label: "ADRESSE", value: settings.address },
               { icon: <Phone />, label: "TÉLÉPHONE", value: settings.phone },
               { icon: <MessageCircle />, label: "WHATSAPP", value: settings.phone },
-              { icon: <Clock />, label: "HORAIRES", value: settings.openingHours },
+              { icon: <Clock />, label: "HORAIRES", value: formatOpeningHours(settings) },
             ].map((item, i) => (
               <motion.div className="contact-item-enhanced" key={i} variants={fadeInUp} whileHover={{ scale: 1.02, x: 4 }}>
                 <div className="contact-icon">{item.icon}</div>

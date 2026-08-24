@@ -26,6 +26,23 @@ export function getHoursForDay(day: Date, settings: SettingsMap): DailyHours {
   };
 }
 
+export function formatOpeningHours(settings: SettingsMap): string {
+  const days = getOpeningDays(settings).sort((a, b) => a - b);
+  const labels = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+  const firstDay = days[0];
+  if (firstDay === undefined) return "Fermé";
+  const firstHours = getHoursForDay(new Date(2026, 0, 4 + firstDay), settings);
+  const sameHours = days.every((day) => {
+    const hours = getHoursForDay(new Date(2026, 0, 4 + day), settings);
+    return hours.start === firstHours.start && hours.end === firstHours.end;
+  });
+  if (sameHours) return `${labels[firstDay]} — ${labels[days[days.length - 1]]} · ${firstHours.start} — ${firstHours.end}`;
+  return days.map((day) => {
+    const hours = getHoursForDay(new Date(2026, 0, 4 + day), settings);
+    return `${labels[day]} ${hours.start} — ${hours.end}`;
+  }).join(" · ");
+}
+
 export function isDayOpen(date: Date, settings: SettingsMap): boolean {
   return getOpeningDays(settings).includes(date.getDay());
 }

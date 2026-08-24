@@ -208,7 +208,7 @@ async function main() {
     cabinetName: "Cabinet Bellevue",
     phone: "+213 555 00 00 00",
     whatsapp: "213555000000",
-    address: "Centre-ville, Alger",
+    address: "12, rue des Jardins, Bellevue, El Harrach — Alger",
     email: "contact@bellevue-cabinet.dz",
     openingHours: "Lun — Sam · 08:00 — 18:00",
     openDays: "1,2,3,4,5,6",
