@@ -1,8 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { getAdminSession, verifyAdminCredentials } from "@/lib/auth";
+import { getAdminSession, createAdminSession, destroyAdminSession, verifyAdminCredentials } from "@/lib/auth";
 import { updateAppointmentStatus } from "@/lib/db/appointments";
 import type { AppointmentStatus } from "@/types/appointment";
 
@@ -27,37 +26,24 @@ export async function loginAction(
     return { error: "Identifiants incorrects." };
   }
 
-  const cookieStore = await cookies();
-
-  cookieStore.set("bellevue_admin", admin.id, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  await createAdminSession(admin.email);
 
   redirect("/admin");
 }
 
 export async function logoutAction() {
-  const cookieStore = await cookies();
-  cookieStore.delete("bellevue_admin");
+  await destroyAdminSession();
   redirect("/admin/login");
 }
 
 export async function requireAdminOrRedirect() {
-  const cookieStore = await cookies();
-  const adminId = cookieStore.get("bellevue_admin")?.value;
+  const session = await getAdminSession();
 
-  if (!adminId) {
+  if (!session) {
     redirect("/admin/login");
   }
 
-  return {
-    id: adminId,
-    email: "admin@bellevue-cabinet.dz",
-  };
+  return session;
 }
 
 export async function setAppointmentStatusAction(
