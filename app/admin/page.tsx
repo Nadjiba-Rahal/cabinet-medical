@@ -85,7 +85,7 @@ export default async function AdminDashboardPage() {
         <section className="admin-panel timeline-panel">
           <div className="admin-panel-heading">
             <div>
-              <p className="admin-kicker">Aujourd'hui</p>
+              <p className="admin-kicker">Aujourd&apos;hui</p>
               <h2>Planning du jour</h2>
             </div>
             <Link href="/admin/appointments" className="text-link">Planning <ArrowRight size={14} /></Link>
@@ -104,7 +104,7 @@ export default async function AdminDashboardPage() {
                 </div>
               </div>
             ))}
-            {todayAppointments.length === 0 && <p className="empty-state">Aucun rendez-vous prévu aujourd'hui.</p>}
+            {todayAppointments.length === 0 && <p className="empty-state">Aucun rendez-vous prévu aujourd&apos;hui.</p>}
           </div>
         </section>
 
