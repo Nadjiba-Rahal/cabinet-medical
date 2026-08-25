@@ -1,175 +1,153 @@
-# BELLEVUE — Cabinet Médical
 
-A portfolio project: a premium single-page website for a fictional Algerian
-private medical practice, with a real, working online booking flow and a
-small admin area behind it.
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Zod-4-E84D10?style=for-the-badge&logo=zod&logoColor=white" />
+</p>
 
-> **Fictional demo project.** "Cabinet Bellevue," "Dr. Nadia Rahal," and all
-> patient/appointment data are invented for demonstration purposes only.
+<h1 align="center">BELLEVUE</h1>
+<h3 align="center">Medical Practice Management System</h3>
 
-## Overview
+<p align="center">
+  <em>Real-time booking, transactional integrity, and administrative control.</em>
+</p>
+<!-- LIVE DEMO URL -->
+<p align="center">
+  <strong>Live Demo:</strong> <a href="https://cabinet-medical-five.vercel.app/">cabinet-medical-five.vercel.app</a>
+</p>
 
-The frontend (layout, animations, copy, images) is a fixed design — this
-README covers what sits underneath it: a real SQLite database, real
-availability checking, and a real booking pipeline, wired into that design
-without changing its markup or CSS.
 
-## Features
 
-- Animated single-page site: hero, services, about, "why us," testimonials,
-  process, FAQ, contact — all in the original design (Framer Motion,
-  particles, dark mode toggle, glass/blur modal)
-- **Real booking flow** inside the existing modal: pick a service, pick a
-  real open date, pick a real available time slot (server-checked against
-  existing bookings), enter contact details, get a confirmation
-- Double-booking is prevented server-side inside a database transaction,
-  not just hidden in the UI
-- Small admin area (`/admin`): login, today's stats, full appointment list
-  with confirm/cancel/complete actions, and editable cabinet settings
-  (phone, WhatsApp number, address, hours)
-- Real `wa.me` WhatsApp deep links (no WhatsApp Business API — see
-  "Notifications" below)
+<!-- PROJECT SCREENSHOT -->
+<p align="center">
+  <img src="https://via.placeholder.com/1200x600/0f172a/ffffff?text=Replace+with+your+website+screenshot" alt="Bellevue Dashboard Screenshot" width="100%" />
+</p>
 
-## Booking flow
+---
 
+## Core Features
+
+| Patient Experience | Administrative Backend |
+| :--- | :--- |
+| Animated Single-Page Application (Framer Motion) | Secure Admin Authentication (bcrypt, HTTP-only cookies) |
+| Multi-Step Real-Time Booking Flow | Appointment Confirm / Cancel / Complete Management |
+| Dynamic Time-Slot Computation (Opening Hours) | Editable Practice Settings (Phone, Hours, Address) |
+| WhatsApp `wa.me` Deep Linking | Daily Operational Statistics & Queue Overview |
+
+---
+
+## Booking Pipeline
+
+```mermaid
+graph TD
+    A[Select Service] --> B[Select Date]
+    B --> C[Select Time Slot]
+    C --> D[Enter Patient Info]
+    D --> E[Validate with Zod]
+    E --> F{Server-Side Transaction}
+    F -->|Overlap Check| G[Appointment Saved]
+    F -->|Overlap Detected| C
 ```
-Service  ->  Date  ->  Time  ->  Patient info  ->  Confirmation
-(step 1)    (step 2)   (step 3)    (step 4)          (step 5)
-```
 
-Each step only unlocks once the previous one is valid. The date/time steps
-are computed from the cabinet's real opening hours and existing
-appointments (`lib/booking/slots.ts`); the final submission re-validates
-everything server-side (`actions/appointment.actions.ts`) with Zod, then
-creates the appointment inside a SQLite transaction that re-checks for
-overlaps immediately before inserting, so two people racing for the same
-slot can't both win it.
+The final submission is wrapped in a SQLite `TRANSACTION`, re-checking time-slot overlaps immediately before insert. This guarantees **no double-booking**, even under race conditions.
+
+---
 
 ## Architecture
 
-```
-app/
-├── page.tsx                  server component: fetches services+settings, renders the design
-├── layout.tsx
-├── globals.css                the original stylesheet, untouched, with additive
-│                               rules appended at the bottom for the info-step form
-│                               and the admin panel (nothing above was edited)
-└── admin/
-    ├── login/page.tsx
-    ├── page.tsx                (dashboard)
-    ├── appointments/page.tsx
-    └── settings/page.tsx
+```mermaid
+graph LR
+    subgraph Frontend
+        A[Patient Site]
+        B[Admin Dashboard]
+    end
 
-components/
-├── bellevue-site.tsx          the original design, now data-driven + booking logic
-└── admin/                     small admin UI pieces
+    subgraph Actions
+        C[Server Actions]
+        D[Auth Actions]
+    end
 
-actions/                       Server Actions (booking, admin auth, settings)
-lib/
-├── db/                        SQLite access layer (better-sqlite3)
-├── booking/slots.ts           opening-hours + duration -> available time slots
-├── validations/appointment.ts Zod schema, shared by client form + server action
-├── auth.ts                    admin session (signed HTTP-only cookie)
-└── notifications/             WhatsApp deep-link + simulated email adapter
+    subgraph Data Layer
+        E[lib/db - SQLite]
+        F[lib/booking - Slots]
+        G[lib/validations - Zod]
+    end
 
-scripts/seed.ts                 demo data (matches the site's 4 service cards 1:1)
+    A --> C
+    B --> D
+    C --> E
+    C --> F
+    C --> G
+    D --> E
 ```
 
-## Tech stack
+- **`app/`**: Next.js App Router (Server Components)
+- **`components/`**: UI Components (Patient + Admin)
+- **`actions/`**: Server Actions (Booking, Auth, Settings)
+- **`lib/db/`**: Database Access Layer
+- **`lib/booking/`**: Time-Slot Algorithms
+- **`lib/validations/`**: Shared Zod Schemas
 
-Next.js 16 (App Router) - TypeScript - React 19 - Framer Motion -
-better-sqlite3 - Zod - React Hook Form - Lucide React
+---
 
-## Database
+## Database Schema
 
-**Why `better-sqlite3` instead of Prisma:** this was built in a sandboxed
-environment whose network allowlist blocked Prisma's engine-binary CDN
-(`binaries.prisma.sh`), so `prisma generate`/`migrate` couldn't complete
-there and the app couldn't be verified end-to-end with it. `better-sqlite3`
-is a plain npm package — no external binary download, synchronous, and
-fully testable in that sandbox. The schema (`lib/db/client.ts`) mirrors
-exactly what a Prisma `schema.prisma` would declare, so migrating to Prisma
-later, with a normal internet connection, is a mechanical change rather
-than a rewrite.
+```mermaid
+erDiagram
+    SERVICE ||--o{ APPOINTMENT : "contains"
+    ADMIN ||--o{ APPOINTMENT : "manages"
 
-**Tables:** `Service`, `Appointment`, `Admin`, `Setting` — see
-`lib/db/client.ts` for the exact DDL, or `types/*.ts` for the TS shapes.
-Indexes exist on `Appointment.startAt`, `.status`, and the
-`(serviceId, startAt)` pair used by the availability check.
+    SERVICE {
+        int id PK
+        string name
+        float price
+        int duration
+    }
 
-The four seeded services (`scripts/seed.ts`) are seeded in the same order
-as the hardcoded display cards (icon, colour, feature tags) in
-`components/bellevue-site.tsx`, so card *N* always books against seeded
-service *N*. If you rename/reorder services from `/admin`, the name/price/
-duration shown on the card stays live — only the icon/colour/feature-tag
-decoration is static, since those aren't stored fields.
+    APPOINTMENT {
+        int id PK
+        int serviceId FK
+        datetime startAt
+        string status
+    }
 
-## Notifications
+    ADMIN {
+        int id PK
+        string email
+        string password
+    }
 
-- **WhatsApp:** real `wa.me/<number>` deep links only (`lib/notifications/whatsapp.ts`).
-  No WhatsApp Business API is integrated.
-- **Email:** `lib/notifications/email.ts` is a **simulated** adapter — it
-  logs what would be sent instead of calling a real provider (no
-  Resend/SES/etc. credentials are wired in). Swapping in a real provider
-  is a one-file change: implement the same function signature and call it
-  from the same place in `actions/appointment.actions.ts`.
+    SETTING {
+        string key PK
+        string value
+    }
+```
 
-## Local development
+---
+
+## Getting Started
 
 ```bash
 npm install
-npx tsx scripts/seed.ts     # (also: npm run db:seed) creates data/bellevue.db + demo data
+npx tsx scripts/seed.ts
 npm run dev
 ```
 
-Visit `http://localhost:3000`. Admin: `http://localhost:3000/admin/login`
-— demo credentials `admin@bellevue-cabinet.dz` / `demo1234`.
+**Admin Panel:** `http://localhost:3000/admin/login`  
+**Demo Credentials:** `admin@bellevue-cabinet.dz` / `demo1234`
 
-**Verification run during this build:**
+---
 
-```bash
-npx tsc --noEmit   # clean
-npx eslint .       # clean
-npm run build      # succeeds - / and /admin/login prerender static, /admin* dynamic
-```
+## Deployment Notes
 
-## Environment variables
+- Requires a **Node.js runtime** (Server Actions + SQLite).
+- Set `ADMIN_SESSION_SECRET` to a secure random string.
+- Ensure `data/` directory is mounted on **persistent storage**.
 
-| Variable               | Purpose                                              | Default (dev)                |
-|-------------------------|-------------------------------------------------------|-------------------------------|
-| `DATABASE_URL`          | Kept for naming parity with a future Prisma migration | `file:./dev.db` (not read directly — see `lib/db/client.ts`, which resolves to `data/bellevue.db`) |
-| `ADMIN_SESSION_SECRET`  | HMAC secret signing the admin session cookie          | insecure dev fallback — **set a real value before deploying** |
+---
 
-## Hosting
-
-This needs a Node.js server runtime (Server Actions + `better-sqlite3`), so
-it is not a static export. Any Node host works (Render, Railway, a VPS,
-Docker, etc.) — just make sure:
-
-1. `ADMIN_SESSION_SECRET` is set to a real random value.
-2. The `data/` directory is on persistent storage (a plain container
-   filesystem gets wiped on redeploy — use a volume, or point `DB_PATH` in
-   `lib/db/client.ts` at a mounted path).
-3. `npx tsx scripts/seed.ts` is run once against the production database
-   (or replace it with your own real services/admin/settings).
-
-## Security notes
-
-- Admin auth is intentionally minimal: bcrypt password check plus a
-  signed, HTTP-only session cookie (`lib/auth.ts`) — no external auth
-  library, matching this project's "keep it simple" scope. Good enough for
-  a small single-admin cabinet site; not a general-purpose auth system.
-- Change the demo admin password before putting this anywhere public
-  (re-run the seed script with a different password, or add a "change
-  password" flow).
-
-## What's intentionally out of scope
-
-No patient accounts, medical records, prescriptions, billing, insurance,
-payments, or complex RBAC. Multi-language/RTL support was also left out of
-this build in favor of keeping the exact single design provided.
-
-## License
-
-Demo/portfolio project. Not for production use without changing the admin
-credentials and session secret.
+<p align="center">
+  <em>Portfolio Project. Built by Nadjiba Rahal.</em>
+</p>
