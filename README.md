@@ -22,7 +22,7 @@
 
 <!-- PROJECT SCREENSHOT -->
 <p align="center">
-  <img src="https://via.placeholder.com/1200x600/0f172a/ffffff?text=Replace+with+your+website+screenshot" alt="Bellevue Dashboard Screenshot" width="100%" />
+  <img src="public/images/Capture d’écran 2026-08-25 023851.png" alt="Bellevue Dashboard Screenshot" width="100%" />
 </p>
 
 ---
